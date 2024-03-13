@@ -1,12 +1,13 @@
 import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, page } from "../index.js";
+import { posts, goToPage, page, updatePosts } from "../index.js";
 import { addLike, removeLike, getPosts } from "../api.js";
 // import { formatDistanceToNow } from 'date-fns'
 // import ru from 'date-fns/locale'
 
 
 export function renderPostsPageComponent({ appEl, token }) {
+  console.log(appEl);
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -67,33 +68,11 @@ function initLikeButtonsListeners() {
 			const id = likeButtonsElement.dataset.id;
 			if (posts[index].isLiked === true) {
         return removeLike({token, id})
-        .then(() => {
-          getPosts({ token })
-        .then((newPosts) => {
-          page = POSTS_PAGE;
-          posts = newPosts;
-          goToPage(POSTS_PAGE)
-        })
-        .catch((error) => {
-          console.error(error);
-          goToPage(POSTS_PAGE)
-        });
-        })
+        .then(() => {updatePosts(token)})
       }
       return addLike ({token, id})
-      .then(() => {
-        getPosts({ token })
-        .then((newPosts) => {
-          page = POSTS_PAGE;
-          posts = newPosts; 
-          goToPage(POSTS_PAGE)
-        })
-        .catch((error) => {
-          console.error(error);
-          goToPage(POSTS_PAGE)
-        });
+      .then(() => {updatePosts(token)})
       })
-    });
 	}
   };
 }

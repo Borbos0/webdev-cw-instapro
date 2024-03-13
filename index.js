@@ -20,6 +20,23 @@ import {
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export const updatePostsUser = (userId, token) => {
+  const appEl = document.getElementById("app");
+    getPostsUser(userId, token)
+  .then((newPosts) => {
+    posts = newPosts;
+    renderPostsPageUserComponent({appEl, token});
+  });
+};
+export const updatePosts = (token) => {
+  const appEl = document.getElementById("app");
+    getPosts({token})
+  .then((newPosts) => {
+    posts = newPosts;
+    renderPostsPageComponent({appEl, token});
+  });
+};
+export let currUserId = null;
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -74,6 +91,7 @@ export const goToPage = (newPage, data) => {
       .then((newPosts) => {
         page = USER_POSTS_PAGE;
         posts = newPosts;
+        currUserId = data.userId;
         renderApp();
       })
       .catch((error) => {

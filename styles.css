@@ -11,7 +11,11 @@
   margin-left: -20px;
   margin-right: -20px;
 }
-
+#app {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
 .logo {
   margin: 0;
   font-size: 28px;
