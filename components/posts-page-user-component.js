@@ -2,6 +2,8 @@ import { renderHeaderComponent } from "./header-component.js";
 import { USER_POSTS_PAGE } from "../routes.js";
 import { posts, goToPage, page, currUserId, updatePostsUser } from "../index.js";
 import { addLike, removeLike } from "../api.js";
+import { formatDistanceToNow } from 'date-fns'
+import { ru } from 'date-fns/locale'
 
 export function renderPostsPageUserComponent({ appEl, token }) {
   const appHtml = posts.map((comment, index) => {
@@ -30,7 +32,7 @@ return `
       ${comment.description}
     </p>
     <p class="post-date">
-    ${comment.createdAt}
+    ${formatDistanceToNow(new Date(comment.createdAt), {locale: ru})}
     </p>
   </li>
 </ul>

@@ -3,7 +3,7 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, page, updatePosts } from "../index.js";
 import { addLike, removeLike, getPosts } from "../api.js";
 import { formatDistanceToNow } from 'date-fns'
-import {ru} from 'date-fns/locale'
+import { ru } from 'date-fns/locale'
 
 
 export function renderPostsPageComponent({ appEl, token }) {
