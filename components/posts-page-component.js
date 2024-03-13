@@ -2,12 +2,11 @@ import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, page, updatePosts } from "../index.js";
 import { addLike, removeLike, getPosts } from "../api.js";
-// import { formatDistanceToNow } from 'date-fns'
-// import ru from 'date-fns/locale'
+import { formatDistanceToNow } from 'date-fns'
+import {ru} from 'date-fns/locale'
 
 
 export function renderPostsPageComponent({ appEl, token }) {
-  console.log(appEl);
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -38,7 +37,7 @@ return `
       ${comment.description}
     </p>
     <p class="post-date">
-    ${comment.createdAt}
+    ${formatDistanceToNow(new Date(comment.createdAt), {locale: ru})}
     </p>
   </li>
 </ul>

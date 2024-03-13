@@ -1,6 +1,13 @@
 {
+  "scripts": {
+    "dev": "webpack --mode development --watch"
+  },
   "dependencies": {
     "date-fns": "^3.3.1",
     "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
   }
 }
