@@ -1,7 +1,9 @@
 import { renderHeaderComponent } from "./header-component.js";
 import { USER_POSTS_PAGE } from "../routes.js";
-import { posts, goToPage, page } from "../index.js";
-import { addLike, removeLike, getPosts } from "../api.js";
+import { posts, goToPage, page, currUserId, updatePostsUser } from "../index.js";
+import { addLike, removeLike } from "../api.js";
+import { formatDistanceToNow } from 'date-fns'
+import { ru } from 'date-fns/locale'
 
 export function renderPostsPageUserComponent({ appEl, token }) {
   const appHtml = posts.map((comment, index) => {
@@ -30,7 +32,7 @@ return `
       ${comment.description}
     </p>
     <p class="post-date">
-    ${comment.createdAt}
+    ${formatDistanceToNow(new Date(comment.createdAt), {locale: ru})}
     </p>
   </li>
 </ul>
@@ -46,7 +48,7 @@ return `
   for (let userEl of document.querySelectorAll(".post-header")) {
     userEl.addEventListener("click", () => {
       goToPage(USER_POSTS_PAGE, {
-        userId: userEl.dataset.userId,
+        userId: currUserId,
       });
     });
   }
@@ -60,32 +62,10 @@ for (const likeButtonsElement of likeButtonsElements) {
     const id = likeButtonsElement.dataset.id;
     if (posts[index].isLiked === true) {
       return removeLike({token, id})
-      .then(() => {
-        getPosts({ token })
-      .then((newPosts) => {
-        page = USER_POSTS_PAGE;
-        posts = newPosts;
-        goToPage(USER_POSTS_PAGE)
-      })
-      .catch((error) => {
-        console.error(error);
-        goToPage(POSTS_PAGE)
-      });
-      })
+      .then(() => {updatePostsUser(currUserId, token)})
     }
     return addLike ({token, id})
-    .then(() => {
-      getPosts({ token })
-      .then((newPosts) => {
-        page = USER_POSTS_PAGE;
-        posts = newPosts; 
-        goToPage(USER_POSTS_PAGE)
-      })
-      .catch((error) => {
-        console.error(error);
-        goToPage(USER_POSTS_PAGE)
-      });
-    })
+    .then(() => {updatePostsUser(currUserId, token)})
   });
 }
 };
